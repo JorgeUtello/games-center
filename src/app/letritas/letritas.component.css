@@ -280,6 +280,10 @@ button[disabled] {
 }
 
 @media (max-width: 600px) {
+	.letritas-container {
+		margin:0px !important;
+		margin-top: 40px ! IMPORTANT;
+	}
 	.show-in-desktop {
 		display: none;
 	}

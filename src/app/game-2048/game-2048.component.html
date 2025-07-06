@@ -1,4 +1,29 @@
 <div class="game-2048-container">
   <h2>2048</h2>
-  <p>¡Aquí irá el juego 2048!</p>
+  <div class="score-bar">
+    <span>Puntaje: {{ score }}</span>
+    <button class="btn btn-sm btn-outline-secondary ms-2" (click)="resetGame()">Reiniciar</button>
+  </div>
+
+  <div class="board">
+    <div *ngFor="let row of board; let i = index" class="board-row">
+      <div *ngFor="let cell of row; let j = index" class="tile" [ngClass]="getTileClass(cell)">
+        <span *ngIf="cell !== 0">{{ cell }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls mt-3">
+    <div class="d-flex flex-column align-items-center">
+      <button class="arrow-btn" (click)="moveButton('up')">▲</button>
+      <div>
+        <button class="arrow-btn me-2" (click)="moveButton('left')">◀</button>
+        <button class="arrow-btn ms-2" (click)="moveButton('right')">▶</button>
+      </div>
+      <button class="arrow-btn" (click)="moveButton('down')">▼</button>
+    </div>
+  </div>
+
+  <div *ngIf="gameOver" class="game-message game-over">Perdiste. ¡Intenta de nuevo!</div>
+  <div *ngIf="gameWon" class="game-message game-won">¡Ganaste! 🎉</div>
 </div>
