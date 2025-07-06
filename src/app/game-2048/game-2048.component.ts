@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-game-2048',
@@ -14,12 +14,18 @@ export class Game2048Component implements OnInit, OnDestroy {
   gameWon = false;
   size = 4;
   mobileMode = false;
+  showSettings = false;
   
   touchStartX = 0;
   touchStartY = 0;
+  darkMode = false;
+
+  timer = 0; // décimas de segundo
+  timerInterval: any;
+  isTimerRunning = false;
 
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     this.resetGame();
   }
   ngOnInit(): void {
@@ -28,6 +34,12 @@ export class Game2048Component implements OnInit, OnDestroy {
     }
     if ('ontouchstart' in window) {
       window.addEventListener('touchmove', this.preventPullToRefresh, { passive: false });
+    }
+    // Restaurar modo oscuro desde localStorage
+    const dark = localStorage.getItem('game2048-darkMode');
+    if (dark === '1') {
+      this.darkMode = true;
+      document.body.classList.add('dark-mode');
     }
   }
 
@@ -65,6 +77,37 @@ export class Game2048Component implements OnInit, OnDestroy {
     }
   }
 
+  startTimer() {
+    if (this.isTimerRunning) return;
+    this.isTimerRunning = true;
+    this.timerInterval = setInterval(() => {
+      this.timer++;
+      this.cdr.detectChanges();
+    }, 100);
+  }
+
+  stopTimer() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
+    this.isTimerRunning = false;
+  }
+
+  resetTimer() {
+    this.stopTimer();
+    this.timer = 0;
+    this.isTimerRunning = false;
+  }
+
+  get timerFormatted(): string {
+    const totalDecimas = this.timer;
+    const minutes = Math.floor(totalDecimas / 600);
+    const seconds = Math.floor((totalDecimas % 600) / 10);
+    const decimas = totalDecimas % 10;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${decimas}`;
+  }
+
   resetGame() {
     this.board = Array.from({ length: this.size }, () => Array(this.size).fill(0));
     this.score = 0;
@@ -72,6 +115,7 @@ export class Game2048Component implements OnInit, OnDestroy {
     this.gameWon = false;
     this.addRandomTile();
     this.addRandomTile();
+    this.resetTimer();
   }
 
   addRandomTile() {
@@ -169,10 +213,14 @@ export class Game2048Component implements OnInit, OnDestroy {
   }
 
   moveButton(dir: 'up' | 'down' | 'left' | 'right') {
+    if (!this.isTimerRunning && this.timer === 0 && !this.gameOver && !this.gameWon) {
+      this.startTimer();
+    }
     if (this.gameOver || this.gameWon) return;
     if (this.move(dir)) {
       this.addRandomTile();
       this.checkGameOver();
+      if (this.gameOver || this.gameWon) this.stopTimer();
     }
   }
 
@@ -184,5 +232,20 @@ export class Game2048Component implements OnInit, OnDestroy {
     if (event.touches.length === 1 && window.scrollY === 0 && event.cancelable) {
       event.preventDefault();
     }
+  }
+
+  // Guardar modo oscuro en localStorage
+  toggleDarkMode() {
+    this.darkMode = !this.darkMode;
+    if (this.darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+    localStorage.setItem('game2048-darkMode', this.darkMode ? '1' : '0');
+  }
+
+  get isDarkMode(): boolean {
+    return this.darkMode;
   }
 }

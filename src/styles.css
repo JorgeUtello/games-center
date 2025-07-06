@@ -69,3 +69,23 @@
 	color: #bbb !important;
 	background: none;
 }
+input.check-btn {
+    width: 40px;
+    height: 23px;
+}
+
+
+/* 2048 */
+.dark-mode {
+
+.game-2048-container {
+	background: #000000c4 !important;
+
+}
+
+.settings-popup {
+    background: black ! IMPORTANT;
+}
+
+}
+

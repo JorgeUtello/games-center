@@ -26,7 +26,7 @@
   gap: 8px;
   background: #bbada0;
   border-radius: 12px;
-  padding: 8px;
+  padding: 10px 0px 10px 10px;
   margin-bottom: 1em;
 }
 
@@ -34,6 +34,12 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
+}
+
+.timer-container {
+    position: absolute;
+    top: 35px;
+    left: 0px;
 }
 
 .tile {
@@ -190,4 +196,59 @@
 button.joystick-btn, button.reload-btn {
     border: none;
     background: none;
+}
+
+.settings-btn-container {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  z-index: 20;
+}
+
+.settings-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.settings-btn:hover, .settings-btn:focus {
+  transform: scale(1.15);
+  outline: none;
+}
+
+.settings-popup-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.settings-popup {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px #0003;
+  padding: 2em 2em 1.5em 2em;
+  min-width: 260px;
+  max-width: 90vw;
+  text-align: center;
+}
+.settings-popup h3 {
+  margin-top: 0;
+}
+.settings-popup button {
+  margin-top: 1.5em;
+  background: #6aaa64;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 1.5em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.settings-popup button:hover {
+  background: #388e3c;
 }
