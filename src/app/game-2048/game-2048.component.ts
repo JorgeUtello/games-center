@@ -1,5 +1,5 @@
-import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-game-2048',
@@ -7,16 +7,44 @@ import { CommonModule } from '@angular/common';
   templateUrl: './game-2048.component.html',
   styleUrl: './game-2048.component.css'
 })
-export class Game2048Component {
+export class Game2048Component implements OnInit {
   board: number[][] = [];
   score = 0;
   gameOver = false;
   gameWon = false;
   size = 4;
+  mobileMode = false;
+
 
   constructor() {
     this.resetGame();
   }
+  ngOnInit(): void {
+    if (window.innerWidth < 600) {
+      this.mobileMode = true;
+    }
+  }
+
+toggleMobileMode() {
+  this.mobileMode = !this.mobileMode;
+}
+
+@HostListener('window:keydown', ['$event'])
+handleKey(event: KeyboardEvent) {
+  if (this.mobileMode) return; // Desactiva flechas en modo móvil
+  if (this.gameOver || this.gameWon) return;
+  let moved = false;
+  switch (event.key) {
+    case 'ArrowUp': moved = this.move('up'); break;
+    case 'ArrowDown': moved = this.move('down'); break;
+    case 'ArrowLeft': moved = this.move('left'); break;
+    case 'ArrowRight': moved = this.move('right'); break;
+  }
+  if (moved) {
+    this.addRandomTile();
+    this.checkGameOver();
+  }
+}
 
   resetGame() {
     this.board = Array.from({ length: this.size }, () => Array(this.size).fill(0));
@@ -37,22 +65,6 @@ export class Game2048Component {
     if (empty.length === 0) return;
     const [row, col] = empty[Math.floor(Math.random() * empty.length)];
     this.board[row][col] = Math.random() < 0.9 ? 2 : 4;
-  }
-
-  @HostListener('window:keydown', ['$event'])
-  handleKey(event: KeyboardEvent) {
-    if (this.gameOver || this.gameWon) return;
-    let moved = false;
-    switch (event.key) {
-      case 'ArrowUp': moved = this.move('up'); break;
-      case 'ArrowDown': moved = this.move('down'); break;
-      case 'ArrowLeft': moved = this.move('left'); break;
-      case 'ArrowRight': moved = this.move('right'); break;
-    }
-    if (moved) {
-      this.addRandomTile();
-      this.checkGameOver();
-    }
   }
 
   move(direction: 'up' | 'down' | 'left' | 'right'): boolean {

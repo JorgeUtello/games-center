@@ -126,3 +126,63 @@
 .dark-mode .game-won {
   background: #388e3c;
 }
+
+.arrow-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.arrow-row {
+    display: flex;
+    flex-direction: row;
+    gap: 120px;
+    margin: 0px 0;
+}
+
+.arrow-btn {
+  background: #8f7a66;
+  border: none;
+  border-radius: 12px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px #0002;
+  transition: background 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+.arrow-btn svg {
+  display: block;
+}
+
+.arrow-btn.arrow-left svg polygon,
+.arrow-btn.arrow-right svg polygon {
+  fill: #4fc3f7;
+}
+
+.arrow-btn:active,
+.arrow-btn:focus {
+  background: #a39489;
+  box-shadow: 0 4px 16px #0003;
+  outline: none;
+}
+
+.arrow-btn:hover {
+  background: #a39489;
+}
+
+.arrow-btn.arrow-left,
+.arrow-btn.arrow-right {
+  background: #b3e5fc;
+}
+
+.arrow-btn.arrow-left:hover,
+.arrow-btn.arrow-right:hover {
+  background: #81d4fa;
+}
