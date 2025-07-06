@@ -17,6 +17,7 @@
   gap: 1em;
   font-size: 1.1em;
   margin-bottom: 1em;
+  justify-content: space-between;
 }
 
 .board {
@@ -185,4 +186,8 @@
 .arrow-btn.arrow-left:hover,
 .arrow-btn.arrow-right:hover {
   background: #81d4fa;
+}
+button.joystick-btn, button.reload-btn {
+    border: none;
+    background: none;
 }

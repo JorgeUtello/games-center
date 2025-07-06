@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { LetritasComponent } from './letritas/letritas.component';
 import { Game2048Component } from './game-2048/game-2048.component';
 import { GamesMenuComponent } from './games-menu.component';
@@ -8,7 +7,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, LetritasComponent, GamesMenuComponent, Game2048Component],
+  imports: [CommonModule, LetritasComponent, GamesMenuComponent, Game2048Component],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

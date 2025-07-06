@@ -1,16 +1,25 @@
 <div class="game-2048-container"
   (touchstart)="onTouchStart($event)"
   (touchend)="onTouchEnd($event)">
->
   <h2>2048</h2>
   <div class="score-bar">
     <span>Puntaje: {{ score }}</span>
-    <button class="btn btn-sm btn-outline-secondary ms-2" (click)="resetGame()">Reiniciar</button>
-        <button class="btn btn-sm btn-outline-primary ms-2" (click)="toggleMobileMode()">
-      {{ mobileMode ? 'Modo escritorio' : 'Modo móvil' }}
-    </button>
+    <div class="btn-contenedor">
+      <button class="reload-btn" (click)="resetGame()" aria-label="Reiniciar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4V1L7 6l5 5V7c3.31 0 6 2.69 6 6 0 3.31-2.69 6-6 6s-6-2.69-6-6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="joystick-btn" (click)="toggleMobileMode()" [attr.aria-label]="mobileMode ? 'Cambiar a modo escritorio' : 'Cambiar a modo móvil'">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" fill="#222"/>
+          <rect x="7" y="15" width="10" height="2" rx="1" fill="#fff"/>
+          <rect x="11" y="7" width="2" height="6" rx="1" fill="#fff"/>
+          <circle cx="12" cy="12" r="2" fill="#fff"/>
+        </svg>
+      </button>
+    </div>
   </div>
-
   <div class="board">
     <div *ngFor="let row of board; let i = index" class="board-row">
       <div *ngFor="let cell of row; let j = index" class="tile" [ngClass]="getTileClass(cell)">
@@ -18,26 +27,24 @@
       </div>
     </div>
   </div>
-
-<div class="controls mt-3" *ngIf="!mobileMode">
-  <div class="arrow-grid">
-    <button class="arrow-btn arrow-up" (click)="moveButton('up')" aria-label="Arriba">
-      <svg width="32" height="32" viewBox="0 0 32 32"><polygon points="16,8 26,20 6,20" fill="white"/></svg>
-    </button>
-    <div class="arrow-row">
-      <button class="arrow-btn arrow-left" (click)="moveButton('left')" aria-label="Izquierda">
-        <svg width="32" height="32" viewBox="0 0 32 32"><polygon points="8,16 20,26 20,6" fill="#4fc3f7"/></svg>
+  <div class="controls mt-3" *ngIf="!mobileMode">
+    <div class="arrow-grid">
+      <button class="arrow-btn arrow-up" (click)="moveButton('up')" aria-label="Arriba">
+        <svg width="32" height="32" viewBox="0 0 32 32"><polygon points="16,8 26,20 6,20" fill="white"/></svg>
       </button>
-      <button class="arrow-btn arrow-right" (click)="moveButton('right')" aria-label="Derecha">
-        <svg width="32" height="32" viewBox="0 0 32 32"><polygon points="24,16 12,26 12,6" fill="#4fc3f7"/></svg>
+      <div class="arrow-row">
+        <button class="arrow-btn arrow-left" (click)="moveButton('left')" aria-label="Izquierda">
+          <svg width="32" height="32" viewBox="0 0 32 32"><polygon points="8,16 20,26 20,6" fill="white"/></svg>
+        </button>
+        <button class="arrow-btn arrow-right" (click)="moveButton('right')" aria-label="Derecha">
+          <svg width="32" height="32" viewBox="0 0 32 32"><polygon points="24,16 12,26 12,6" fill="white"/></svg>
+        </button>
+      </div>
+      <button class="arrow-btn arrow-down" (click)="moveButton('down')" aria-label="Abajo">
+        <svg width="32" height="32" viewBox="0 0 32 32"><polygon points="16,24 26,12 6,12" fill="white"/></svg>
       </button>
     </div>
-    <button class="arrow-btn arrow-down" (click)="moveButton('down')" aria-label="Abajo">
-      <svg width="32" height="32" viewBox="0 0 32 32"><polygon points="16,24 26,12 6,12" fill="white"/></svg>
-    </button>
   </div>
-</div>
-
   <div *ngIf="gameOver" class="game-message game-over">Perdiste. ¡Intenta de nuevo!</div>
   <div *ngIf="gameWon" class="game-message game-won">¡Ganaste! 🎉</div>
 </div>

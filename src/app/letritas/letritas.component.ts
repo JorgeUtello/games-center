@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 	templateUrl: './letritas.component.html',
 	styleUrls: ['./letritas.component.css'],
 })
-export class LetritasComponent {
+export class LetritasComponent implements OnInit, OnDestroy {
 	public word = '';
 	public wordLength: number = 5;
 	public loading = false;
@@ -50,6 +50,22 @@ export class LetritasComponent {
 		const letras = this.getCookie('letritas-length');
 		if (letras && !isNaN(+letras)) {
 			this.wordLength = +letras;
+		}
+		// Deshabilitar pull-to-refresh en mobile
+		if ('ontouchstart' in window) {
+			window.addEventListener('touchmove', this.preventPullToRefresh, { passive: false });
+		}
+	}
+
+	ngOnDestroy() {
+		if ('ontouchstart' in window) {
+			window.removeEventListener('touchmove', this.preventPullToRefresh);
+		}
+	}
+
+	preventPullToRefresh = (event: TouchEvent) => {
+		if (event.touches.length === 1 && event.touches[0].clientY < 100 && event.cancelable) {
+			event.preventDefault();
 		}
 	}
 
