@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-game-2048',
@@ -7,7 +7,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
   templateUrl: './game-2048.component.html',
   styleUrl: './game-2048.component.css'
 })
-export class Game2048Component implements OnInit {
+export class Game2048Component implements OnInit, OnDestroy {
   board: number[][] = [];
   score = 0;
   gameOver = false;
@@ -26,35 +26,44 @@ export class Game2048Component implements OnInit {
     if (window.innerWidth < 600) {
       this.mobileMode = true;
     }
+    if ('ontouchstart' in window) {
+      window.addEventListener('touchmove', this.preventPullToRefresh, { passive: false });
+    }
   }
 
-toggleMobileMode() {
-  this.mobileMode = !this.mobileMode;
-}
+  ngOnDestroy(): void {
+    if ('ontouchstart' in window) {
+      window.removeEventListener('touchmove', this.preventPullToRefresh);
+    }
+  }
 
-onTouchStart(event: TouchEvent) {
-  if (event.touches.length === 1) {
-    this.touchStartX = event.touches[0].clientX;
-    this.touchStartY = event.touches[0].clientY;
+  toggleMobileMode() {
+    this.mobileMode = !this.mobileMode;
   }
-}
 
-@HostListener('window:keydown', ['$event'])
-handleKey(event: KeyboardEvent) {
-  if (this.mobileMode) return; // Desactiva flechas en modo móvil
-  if (this.gameOver || this.gameWon) return;
-  let moved = false;
-  switch (event.key) {
-    case 'ArrowUp': moved = this.move('up'); break;
-    case 'ArrowDown': moved = this.move('down'); break;
-    case 'ArrowLeft': moved = this.move('left'); break;
-    case 'ArrowRight': moved = this.move('right'); break;
+  onTouchStart(event: TouchEvent) {
+    if (event.touches.length === 1) {
+      this.touchStartX = event.touches[0].clientX;
+      this.touchStartY = event.touches[0].clientY;
+    }
   }
-  if (moved) {
-    this.addRandomTile();
-    this.checkGameOver();
+
+  @HostListener('window:keydown', ['$event'])
+  handleKey(event: KeyboardEvent) {
+    if (this.mobileMode) return; // Desactiva flechas en modo móvil
+    if (this.gameOver || this.gameWon) return;
+    let moved = false;
+    switch (event.key) {
+      case 'ArrowUp': moved = this.move('up'); break;
+      case 'ArrowDown': moved = this.move('down'); break;
+      case 'ArrowLeft': moved = this.move('left'); break;
+      case 'ArrowRight': moved = this.move('right'); break;
+    }
+    if (moved) {
+      this.addRandomTile();
+      this.checkGameOver();
+    }
   }
-}
 
   resetGame() {
     this.board = Array.from({ length: this.size }, () => Array(this.size).fill(0));
@@ -91,20 +100,20 @@ handleKey(event: KeyboardEvent) {
   }
 
   onTouchEnd(event: TouchEvent) {
-  if (event.changedTouches.length === 1) {
-    const dx = event.changedTouches[0].clientX - this.touchStartX;
-    const dy = event.changedTouches[0].clientY - this.touchStartY;
-    if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
-      if (Math.abs(dx) > Math.abs(dy)) {
-        if (dx > 0) this.moveButton('right');
-        else this.moveButton('left');
-      } else {
-        if (dy > 0) this.moveButton('down');
-        else this.moveButton('up');
+    if (event.changedTouches.length === 1) {
+      const dx = event.changedTouches[0].clientX - this.touchStartX;
+      const dy = event.changedTouches[0].clientY - this.touchStartY;
+      if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
+        if (Math.abs(dx) > Math.abs(dy)) {
+          if (dx > 0) this.moveButton('right');
+          else this.moveButton('left');
+        } else {
+          if (dy > 0) this.moveButton('down');
+          else this.moveButton('up');
+        }
       }
     }
   }
-}
 
   getLine(index: number, dir: string): number[] {
     const arr = [];
@@ -169,5 +178,11 @@ handleKey(event: KeyboardEvent) {
 
   getTileClass(val: number): string {
     return val === 0 ? 'tile-empty' : 'tile-' + val;
+  }
+
+  preventPullToRefresh = (event: TouchEvent) => {
+    if (event.touches.length === 1 && window.scrollY === 0 && event.cancelable) {
+      event.preventDefault();
+    }
   }
 }
