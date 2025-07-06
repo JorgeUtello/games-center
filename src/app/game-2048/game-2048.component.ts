@@ -14,6 +14,9 @@ export class Game2048Component implements OnInit {
   gameWon = false;
   size = 4;
   mobileMode = false;
+  
+  touchStartX = 0;
+  touchStartY = 0;
 
 
   constructor() {
@@ -27,6 +30,13 @@ export class Game2048Component implements OnInit {
 
 toggleMobileMode() {
   this.mobileMode = !this.mobileMode;
+}
+
+onTouchStart(event: TouchEvent) {
+  if (event.touches.length === 1) {
+    this.touchStartX = event.touches[0].clientX;
+    this.touchStartY = event.touches[0].clientY;
+  }
 }
 
 @HostListener('window:keydown', ['$event'])
@@ -79,6 +89,22 @@ handleKey(event: KeyboardEvent) {
     }
     return moved;
   }
+
+  onTouchEnd(event: TouchEvent) {
+  if (event.changedTouches.length === 1) {
+    const dx = event.changedTouches[0].clientX - this.touchStartX;
+    const dy = event.changedTouches[0].clientY - this.touchStartY;
+    if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 0) this.moveButton('right');
+        else this.moveButton('left');
+      } else {
+        if (dy > 0) this.moveButton('down');
+        else this.moveButton('up');
+      }
+    }
+  }
+}
 
   getLine(index: number, dir: string): number[] {
     const arr = [];
