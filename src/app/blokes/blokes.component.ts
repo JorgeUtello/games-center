@@ -84,7 +84,7 @@ export class BlokesComponent {
     this.board = Array.from({length: ROWS}, () => Array(COLS).fill(-1));
     this.score = 0;
     this.gameOver = false;
-    this.spawnPiece();
+    this.current = this.randomPiece();
     this.next = this.randomPiece();
     clearInterval(this.interval);
     this.interval = setInterval(() => {
@@ -99,7 +99,7 @@ export class BlokesComponent {
   }
 
   spawnPiece() {
-    this.current = this.next ? {...this.next, row: 0, col: 3} : this.randomPiece();
+    this.current = { ...this.next, row: 0, col: 3 };
     this.next = this.randomPiece();
     if (!this.valid(this.current, 0, 0, this.current.rotation)) {
       this.gameOver = true;

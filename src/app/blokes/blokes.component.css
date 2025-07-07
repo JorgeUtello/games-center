@@ -43,14 +43,16 @@
 	width: auto;
 	height: 100%;
 	aspect-ratio: 10 / 20;
-	background: #222;
-	border-radius: 8px;
+	background: linear-gradient(180deg, #23272f 80%, #1a1d22 100%);
+	border-radius: 16px;
 	overflow: hidden;
 	margin: 0 auto;
 	display: grid;
 	grid-template-rows: repeat(20, 1fr);
 	grid-template-columns: repeat(10, 1fr);
 	box-sizing: border-box;
+	border: 2.5px solid #b0b8c9;
+	box-shadow: 0 4px 24px #0003, 0 1.5px 8px #0002;
 }
 
 .tetris-row {
@@ -60,19 +62,29 @@
 .tetris-cell {
 	width: 100%;
 	aspect-ratio: 1 / 1;
-	border: 1px solid #3333;
+	border: 1.5px solid #3335;
 	box-sizing: border-box;
-	background: transparent;
-	transition: background 0.1s;
+	background: rgba(255,255,255,0.03);
+	transition: background 0.15s, box-shadow 0.15s;
+	border-radius: 8px;
+	box-shadow: 0 1px 4px #0001;
 }
 
 .tetris-cell.piece {
 	position: absolute;
 	width: calc(100% / 10);
 	aspect-ratio: 1 / 1;
-	border-radius: 4px;
+	border-radius: 8px;
 	z-index: 2;
-	border: 2px solid #fff4;
+	border: 2.5px solid #fff7;
+	box-shadow: 0 2px 12px #0003, 0 1.5px 8px #0002;
+	filter: brightness(1.1) drop-shadow(0 0 8px #fff5);
+	animation: tetris-drop 0.18s cubic-bezier(.4,2,.6,1) 1;
+}
+
+@keyframes tetris-drop {
+	0% { transform: scale(0.7) translateY(-20%); opacity: 0.7; }
+	100% { transform: scale(1) translateY(0); opacity: 1; }
 }
 
 .tetris-info {
