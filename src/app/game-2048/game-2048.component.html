@@ -1,7 +1,7 @@
 <div class="game-2048-container"
   (touchstart)="onTouchStart($event)"
   (touchend)="onTouchEnd($event)">
-  <div class="timer-container">⏱️ {{ timerFormatted }}</div>
+  <div class="timer-container">{{ timerFormatted }}</div>
   <h2>2048</h2>
   <div class="score-bar">
     <span>Puntaje: {{ score }}</span>

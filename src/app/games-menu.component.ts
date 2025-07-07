@@ -28,7 +28,8 @@ export class GamesMenuComponent {
 
   games = [
     { key: 'letritas', name: 'Letritas (Wordle)' },
-    { key: '2048', name: '2048' }
+    { key: '2048', name: '2048' },
+    { key: 'blokes', name: 'Blokes' }
     // Agrega aquí más juegos
   ];
 
