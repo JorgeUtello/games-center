@@ -180,9 +180,10 @@
 	}
 
 	.score {
-		margin-top: -18px;
-		font-weight: bold;
-		font-size: 14px;
+		position: absolute;
+		top: 4px;
+		right: 10px;
+		font-size: 14px ! IMPORTANT;
 	}
 
 	.tetris-controls {
@@ -201,8 +202,8 @@
 		min-width: 30px;
 		min-height: 30px;
 		position: absolute;
-		right: -10px;
-		top: 44px;
+		top: 42px;
+		right: -3px;
 	}
 
 	.game-over {
