@@ -71,6 +71,8 @@ export class BlokesComponent {
   gameOver = false;
   speed = 500;
   isMobile = false;
+  linesCleared = 0;
+  level = 1;
 
   COLORS = COLORS;
   ROWS = ROWS;
@@ -83,6 +85,9 @@ export class BlokesComponent {
   reset() {
     this.board = Array.from({length: ROWS}, () => Array(COLS).fill(-1));
     this.score = 0;
+    this.linesCleared = 0;
+    this.level = 1;
+    this.speed = 500;
     this.gameOver = false;
     this.current = this.randomPiece();
     this.next = this.randomPiece();
@@ -137,6 +142,19 @@ export class BlokesComponent {
     }
   }
 
+  updateLevel() {
+    const newLevel = Math.floor(this.score / 1000) + 1;
+    if (newLevel !== this.level) {
+      this.level = newLevel;
+      this.speed = Math.max(50, 500 - (this.level - 1) * 10);
+      clearInterval(this.interval);
+      this.interval = setInterval(() => {
+        this.tick();
+        this.cdr.detectChanges();
+      }, this.speed);
+    }
+  }
+
   clearLines() {
     let lines = 0;
     for (let r = ROWS - 1; r >= 0; r--) {
@@ -147,7 +165,11 @@ export class BlokesComponent {
         r++;
       }
     }
-    if (lines > 0) this.score += [0, 100, 300, 500, 800][lines];
+    if (lines > 0) {
+      this.score += [0, 100, 300, 500, 800][lines];
+      this.linesCleared += lines;
+      this.updateLevel();
+    }
   }
 
   tick() {
@@ -188,6 +210,10 @@ export class BlokesComponent {
     } else {
       this.tick();
     }
+  }
+
+  get scoreDisplay(): string {
+    return this.score.toString().padStart(6, '0');
   }
 
   // Controles de teclado

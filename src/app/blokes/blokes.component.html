@@ -1,21 +1,27 @@
 <div class="blokes-container">
 <div class="blokes-header">
 	<div class="title">Blokes</div>
-	<div class="score">Puntaje: {{score}}</div>
+	<div class="info">
+		<div class="score">{{scoreDisplay}}</div>
+		<div class="lines">Líneas {{linesCleared}}</div>
+		<div class="level">Nivel {{level}}</div>
+	</div>
 </div>
   <div class="tetris-info">
-	<div class="next-piece">
-	  <div class="next-grid">
-		<div *ngFor="let r of [].constructor(getShape(next).length); let i = index">
-		  <div *ngFor="let c of [].constructor(getShape(next)[0].length); let j = index">
-			<div *ngIf="getShape(next)[i][j]"
-				 class="tetris-cell"
-				 [ngStyle]="{'background': COLORS[next.type]}"
-				 ></div>
-		  </div>
-		</div>
-	  </div>
-	</div>
+    <div class="next-piece">
+      <div class="next-grid">
+        <ng-container *ngFor="let r of [].constructor(4); let i = index">
+          <ng-container *ngFor="let c of [].constructor(4); let j = index">
+            <div *ngIf="getShape(next)[i] && getShape(next)[i][j]"
+                 class="tetris-cell"
+                 [ngStyle]="{'background': COLORS[next.type], 'border': '2px solid #fff7'}">
+            </div>
+            <div *ngIf="!getShape(next)[i] || !getShape(next)[i][j]"
+                 class="tetris-cell empty"></div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
   </div>
   <div class="tetris-board-wrapper">
     <div class="tetris-board">
