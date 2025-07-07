@@ -73,6 +73,8 @@ export class BlokesComponent {
   isMobile = false;
   linesCleared = 0;
   level = 1;
+  showConfig = false;
+  darkMode = false;
 
   COLORS = COLORS;
   ROWS = ROWS;
@@ -233,4 +235,17 @@ export class BlokesComponent {
   onRotate() { this.rotate(); }
   onDown() { this.accelerate(); }
   onDrop() { this.drop(); }
+
+  toggleConfig() {
+    this.showConfig = !this.showConfig;
+  }
+
+  toggleDarkMode() {
+    this.darkMode = !this.darkMode;
+    if (this.darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }
 }

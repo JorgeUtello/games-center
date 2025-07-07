@@ -1,59 +1,72 @@
 <div class="blokes-container">
-<div class="blokes-header">
-	<div class="title">Blokes</div>
-	<div class="info">
-		<div class="score">{{scoreDisplay}}</div>
-		<div class="lines">Líneas {{linesCleared}}</div>
-		<div class="level">Nivel {{level}}</div>
+	<div class="blokes-header2">
+		<div class="title">Blokes</div>
 	</div>
+	<div class="main-area">
+		<div class="middle-area">
+			<div class="tetris-board-wrapper">
+				<div class="tetris-board">
+					<div *ngFor="let row of board; let r = index" class="tetris-row">
+						<div *ngFor="let cell of row; let c = index" class="tetris-cell"
+							[ngStyle]="{'background': cell !== -1 ? COLORS[cell] : 'transparent'}">
+						</div>
+					</div>
+					<!-- Render pieza actual -->
+					<ng-container *ngIf="!gameOver">
+						<div *ngFor="let r of [].constructor(getShape(current).length); let i = index">
+							<div *ngFor="let c of [].constructor(getShape(current)[0].length); let j = index">
+								<div *ngIf="getShape(current)[i][j] && current.row + i >= 0" class="tetris-cell piece"
+									[ngStyle]="{'top': ((current.row + i) * 100 / ROWS) + '%',
+                               'left': ((current.col + j) * 100 / COLS) + '%',
+                               'background': COLORS[current.type]}"></div>
+							</div>
+						</div>
+					</ng-container>
+				</div>
+			</div>
+			<div class="side-area">
+				<div class="info">
+					<div class="score">{{scoreDisplay}}</div>
+					<div class="lines">Líneas {{linesCleared}}</div>
+					<div class="level">Nivel {{level}}</div>
+				</div>
+				<div class="tetris-info">
+					<div class="next-piece">
+						<div class="next-grid">
+							<ng-container *ngFor="let r of [].constructor(4); let i = index">
+								<ng-container *ngFor="let c of [].constructor(4); let j = index">
+									<div *ngIf="getShape(next)[i] && getShape(next)[i][j]" class="tetris-cell"
+										[ngStyle]="{'background': COLORS[next.type], 'border': '2px solid #fff7'}">
+									</div>
+									<div *ngIf="!getShape(next)[i] || !getShape(next)[i][j]" class="tetris-cell empty">
+									</div>
+								</ng-container>
+							</ng-container>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tetris-controls">
+		<button (click)="onLeft()" aria-label="Izquierda"><span class="material-icons">arrow_left</span></button>
+		<button (click)="onRotate()" aria-label="Girar"><span class="material-icons">rotate_right</span></button>
+		<button (click)="onDown()" aria-label="Bajar rápido"><span class="material-icons">arrow_downward</span></button>
+		<button (click)="onRight()" aria-label="Derecha"><span class="material-icons">arrow_right</span></button>
+	</div>
+	<div *ngIf="gameOver" class="game-over">
+		<p>¡Game Over!</p>
+		<button (click)="reset()">Reiniciar</button>
+	</div>
+
 </div>
-  <div class="tetris-info">
-    <div class="next-piece">
-      <div class="next-grid">
-        <ng-container *ngFor="let r of [].constructor(4); let i = index">
-          <ng-container *ngFor="let c of [].constructor(4); let j = index">
-            <div *ngIf="getShape(next)[i] && getShape(next)[i][j]"
-                 class="tetris-cell"
-                 [ngStyle]="{'background': COLORS[next.type], 'border': '2px solid #fff7'}">
-            </div>
-            <div *ngIf="!getShape(next)[i] || !getShape(next)[i][j]"
-                 class="tetris-cell empty"></div>
-          </ng-container>
-        </ng-container>
-      </div>
-    </div>
-  </div>
-  <div class="tetris-board-wrapper">
-    <div class="tetris-board">
-      <div *ngFor="let row of board; let r = index" class="tetris-row">
-        <div *ngFor="let cell of row; let c = index"
-             class="tetris-cell"
-             [ngStyle]="{'background': cell !== -1 ? COLORS[cell] : 'transparent'}">
-        </div>
-      </div>
-      <!-- Render pieza actual -->
-      <ng-container *ngIf="!gameOver">
-        <div *ngFor="let r of [].constructor(getShape(current).length); let i = index">
-          <div *ngFor="let c of [].constructor(getShape(current)[0].length); let j = index">
-            <div *ngIf="getShape(current)[i][j] && current.row + i >= 0"
-                 class="tetris-cell piece"
-                 [ngStyle]="{'top': ((current.row + i) * 100 / ROWS) + '%',
-                             'left': ((current.col + j) * 100 / COLS) + '%',
-                             'background': COLORS[current.type]}"
-                 ></div>
-          </div>
-        </div>
-      </ng-container>
-    </div>
-  </div>
-  <div class="tetris-controls">
-    <button (click)="onLeft()" aria-label="Izquierda"><span class="material-icons">arrow_left</span></button>
-    <button (click)="onRotate()" aria-label="Girar"><span class="material-icons">rotate_right</span></button>
-    <button (click)="onDown()" aria-label="Bajar rápido"><span class="material-icons">arrow_downward</span></button>
-    <button (click)="onRight()" aria-label="Derecha"><span class="material-icons">arrow_right</span></button>
-  </div>
-  <div *ngIf="gameOver" class="game-over">
-    <p>¡Game Over!</p>
-    <button (click)="reset()">Reiniciar</button>
-  </div>
+<button class="config-btn" (click)="toggleConfig()" aria-label="Configuración">
+	<span class="material-icons">settings</span>
+</button>
+<div *ngIf="showConfig" class="config-popup">
+	<h3>Configuración</h3>
+	<label>
+		<input type="checkbox" [checked]="darkMode" (change)="toggleDarkMode()"> Modo oscuro
+	</label>
+	<button (click)="toggleConfig()">Cerrar</button>
 </div>
