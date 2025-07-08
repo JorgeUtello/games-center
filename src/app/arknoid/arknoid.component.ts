@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -32,8 +32,8 @@ interface Brick {
   styleUrls: ['./arknoid.component.css']
 })
 export class ArknoidComponent {
-  canvasWidth = 320;
-  canvasHeight = 480;
+  canvasWidth = 0;
+  canvasHeight = 0;
   ball: Ball = { x: 160, y: 300, dx: 2, dy: -2, radius: 7 };
   paddle: Paddle = { x: 120, width: 80, height: 12 };
   bricks: Brick[] = [];
@@ -52,14 +52,34 @@ export class ArknoidComponent {
   isMobile = false;
   darkMode = false;
   showConfig = false;
+  renderLoopId: any;
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     this.initBricks();
   }
 
   ngOnInit() {
+    this.setFullScreen();
+    window.addEventListener('resize', this.setFullScreen.bind(this));
     this.detectMobile();
     this.startGame();
+    this.startRenderLoop();
+  }
+
+  setFullScreen() {
+    // Ocupa todo el viewport menos el header y controles
+    const vh = window.innerHeight;
+    const vw = window.innerWidth;
+    // Deja espacio para controles (60px aprox)
+    this.canvasWidth = Math.min(vw, 480);
+    this.canvasHeight = vh - 120;
+    if (this.canvasHeight < 240) this.canvasHeight = 240;
+    if (this.canvasWidth < 200) this.canvasWidth = 200;
+    // Ajusta paddle y bola si es mobile
+    if (this.isMobile) {
+      this.paddle.width = Math.max(60, this.canvasWidth * 0.25);
+      this.ball.radius = Math.max(6, Math.floor(this.canvasWidth / 40));
+    }
   }
 
   detectMobile() {
@@ -168,7 +188,7 @@ export class ArknoidComponent {
   }
 
   movePaddle(dir: number) {
-    this.paddle.x += dir * 24;
+    this.paddle.x += dir * (this.canvasWidth * 0.12);
     if (this.paddle.x < 0) this.paddle.x = 0;
     if (this.paddle.x > this.canvasWidth - this.paddle.width) this.paddle.x = this.canvasWidth - this.paddle.width;
   }
@@ -190,5 +210,19 @@ export class ArknoidComponent {
     this.darkMode = !this.darkMode;
     if (this.darkMode) document.body.classList.add('dark-mode');
     else document.body.classList.remove('dark-mode');
+  }
+
+  startRenderLoop() {
+    if (this.renderLoopId) cancelAnimationFrame(this.renderLoopId);
+    const render = () => {
+      this.cdr.detectChanges();
+      this.renderLoopId = requestAnimationFrame(render);
+    };
+    this.renderLoopId = requestAnimationFrame(render);
+  }
+
+  ngOnDestroy() {
+    if (this.renderLoopId) cancelAnimationFrame(this.renderLoopId);
+    clearInterval(this.interval);
   }
 }

@@ -45,7 +45,7 @@ const TETROMINOS = [
   ]
 ];
 const COLORS = ['#00f0f0','#f0f000','#a000f0','#00f000','#f00000','#0000f0','#f0a000'];
-const ROWS = 40;
+const ROWS = 38;
 const COLS = 20;
 
 interface Piece {

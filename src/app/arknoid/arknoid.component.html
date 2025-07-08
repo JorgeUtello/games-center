@@ -7,12 +7,12 @@
     </button>
   </div>
   <div class="arknoid-canvas-wrapper">
-    <canvas #canvas width="{{canvasWidth}}" height="{{canvasHeight}}"></canvas>
+    <canvas #canvas [attr.width]="canvasWidth" [attr.height]="canvasHeight"></canvas>
     <svg class="arknoid-svg" [attr.width]="canvasWidth" [attr.height]="canvasHeight">
       <g *ngFor="let brick of bricks">
         <rect *ngIf="!brick.destroyed" [attr.x]="brick.x" [attr.y]="brick.y" [attr.width]="brick.width" [attr.height]="brick.height" class="brick" />
       </g>
-      <rect [attr.x]="paddle.x" [attr.y]="canvasHeight-24" [attr.width]="paddle.width" [attr.height]="paddle.height" class="paddle" />
+      <rect [attr.x]="paddle.x" [attr.y]="canvasHeight-32" [attr.width]="paddle.width" [attr.height]="paddle.height" class="paddle" />
       <circle [attr.cx]="ball.x" [attr.cy]="ball.y" [attr.r]="ball.radius" class="ball" />
     </svg>
     <div class="arknoid-overlay" *ngIf="gameOver">
@@ -24,10 +24,9 @@
       <button (click)="onRestart()">Restart</button>
     </div>
   </div>
-  <div class="arknoid-controls">
+  <div class="arknoid-controls bottom-controls">
     <button class="icon-btn" (click)="onLeft()"><span class="material-icons">chevron_left</span></button>
     <button class="icon-btn" (click)="onRight()"><span class="material-icons">chevron_right</span></button>
-    <button class="icon-btn" (click)="onRestart()"><span class="material-icons">replay</span></button>
   </div>
   <div class="arknoid-config" *ngIf="showConfig">
     <h3>Configuración</h3>
