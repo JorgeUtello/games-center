@@ -1,0 +1,142 @@
+.arknoid-container {
+  max-width: 360px;
+  margin: 0 auto;
+  background: var(--ark-bg, #f5f5f5);
+  border-radius: 16px;
+  box-shadow: 0 2px 16px #0002;
+  padding: 8px 0 16px 0;
+  position: relative;
+  font-family: 'Roboto', Arial, sans-serif;
+}
+.arknoid-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px 8px 16px;
+}
+.score, .lives {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+.arknoid-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.arknoid-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+canvas {
+  background: var(--ark-canvas, #222);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 100%;
+  display: block;
+  z-index: 1;
+}
+.brick {
+  fill: #ff9800;
+  stroke: #fff3;
+  stroke-width: 1;
+  rx: 3;
+}
+.paddle {
+  fill: #2196f3;
+  rx: 6;
+}
+.ball {
+  fill: #fff;
+  stroke: #2196f3;
+  stroke-width: 1;
+}
+.arknoid-controls {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 12px 0 0 0;
+}
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 2em;
+  color: #333;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.icon-btn:active {
+  background: #ddd;
+}
+.arknoid-overlay {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: #000a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  color: #fff;
+  font-size: 2em;
+  border-radius: 8px;
+}
+.arknoid-message {
+  margin-bottom: 16px;
+}
+.arknoid-config {
+  position: absolute;
+  top: 40px;
+  right: 16px;
+  background: #fff;
+  color: #222;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px #0003;
+  padding: 16px 24px;
+  z-index: 20;
+  min-width: 180px;
+}
+.arknoid-config h3 {
+  margin-top: 0;
+}
+.arknoid-config label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.arknoid-container.dark, .arknoid-container.dark .arknoid-config {
+  --ark-bg: #181c24;
+  --ark-canvas: #222b;
+  background: #181c24;
+  color: #eee;
+}
+.arknoid-container.dark .arknoid-config {
+  background: #23283a;
+  color: #eee;
+}
+.arknoid-container.dark .icon-btn {
+  color: #eee;
+}
+@media (max-width: 600px) {
+  .arknoid-container {
+    max-width: 100vw;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+  .arknoid-header {
+    padding: 0 8px 8px 8px;
+  }
+  .arknoid-config {
+    right: 4px;
+    top: 32px;
+    min-width: 120px;
+    padding: 10px 10px;
+  }
+}

@@ -1,0 +1,40 @@
+<div class="arknoid-container" [class.dark]="darkMode">
+  <div class="arknoid-header">
+    <span class="score">Score: {{ score | number:'3.0' }}</span>
+    <span class="lives">Lives: {{ lives }}</span>
+    <button class="icon-btn" (click)="toggleConfig()">
+      <span class="material-icons">settings</span>
+    </button>
+  </div>
+  <div class="arknoid-canvas-wrapper">
+    <canvas #canvas width="{{canvasWidth}}" height="{{canvasHeight}}"></canvas>
+    <svg class="arknoid-svg" [attr.width]="canvasWidth" [attr.height]="canvasHeight">
+      <g *ngFor="let brick of bricks">
+        <rect *ngIf="!brick.destroyed" [attr.x]="brick.x" [attr.y]="brick.y" [attr.width]="brick.width" [attr.height]="brick.height" class="brick" />
+      </g>
+      <rect [attr.x]="paddle.x" [attr.y]="canvasHeight-24" [attr.width]="paddle.width" [attr.height]="paddle.height" class="paddle" />
+      <circle [attr.cx]="ball.x" [attr.cy]="ball.y" [attr.r]="ball.radius" class="ball" />
+    </svg>
+    <div class="arknoid-overlay" *ngIf="gameOver">
+      <div class="arknoid-message">Game Over</div>
+      <button (click)="onRestart()">Restart</button>
+    </div>
+    <div class="arknoid-overlay" *ngIf="gameWon">
+      <div class="arknoid-message">You Win!</div>
+      <button (click)="onRestart()">Restart</button>
+    </div>
+  </div>
+  <div class="arknoid-controls">
+    <button class="icon-btn" (click)="onLeft()"><span class="material-icons">chevron_left</span></button>
+    <button class="icon-btn" (click)="onRight()"><span class="material-icons">chevron_right</span></button>
+    <button class="icon-btn" (click)="onRestart()"><span class="material-icons">replay</span></button>
+  </div>
+  <div class="arknoid-config" *ngIf="showConfig">
+    <h3>Configuración</h3>
+    <label>
+      <input type="checkbox" [(ngModel)]="darkMode" (change)="toggleDarkMode()" />
+      Modo oscuro
+    </label>
+    <button (click)="toggleConfig()">Cerrar</button>
+  </div>
+</div>
