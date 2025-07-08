@@ -1,8 +1,6 @@
 .blokes-header {
 	font-size: 1.5em;
-	font-weight: bold;
 	margin-bottom: 0.5em;
-	color: #333;
 }
 
 .title {
@@ -49,6 +47,7 @@
 	box-sizing: border-box;
 	border: 2.5px solid #b0b8c9;
 	box-shadow: 0 4px 24px #0003, 0 1.5px 8px #0002;
+	padding: 10px;
 }
 
 .tetris-row {
@@ -121,8 +120,8 @@
 
 .tetris-controls button {
 	font-size: 20px;
-    padding: 18px;
-    margin: 10px;
+	padding: 18px;
+	margin: 10px;
 	border-radius: 10px;
 	border: none;
 	background: #6aaa64;
@@ -183,7 +182,7 @@
 	color: #222;
 	border-radius: 12px;
 	box-shadow: 0 4px 32px #0003;
-	padding: 2em 2.5em 1.5em;
+	padding: 10px;
 	z-index: 1000;
 	min-width: 220px;
 	text-align: center;
@@ -239,7 +238,7 @@ body.dark-mode .config-popup {
 
 body.dark-mode .config-btn,
 body.dark-mode .title {
-	color: #eee;
+	color: #eee !important;
 }
 
 .side-area {
@@ -357,5 +356,10 @@ input.check-btn {
 	.config-btn {
 		top: -10px;
 		right: 1px;
+	}
+
+	body.dark-mode .config-btn,
+	body.dark-mode .title {
+		color: #eee !important;
 	}
 }
