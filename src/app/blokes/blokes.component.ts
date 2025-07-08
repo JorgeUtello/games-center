@@ -84,6 +84,19 @@ export class BlokesComponent {
     this.reset();
   }
 
+  ngOnInit() {
+    const saved = localStorage.getItem('blokes-state');
+    if (saved) {
+      const state = JSON.parse(saved);
+      this.score = state.score || 0;
+      this.linesCleared = state.linesCleared || 0;
+      this.level = state.level || 1;
+      this.speed = state.speed || 500;
+      this.darkMode = state.darkMode || false;
+      if (this.darkMode) document.body.classList.add('dark-mode');
+    }
+  }
+
   reset() {
     this.board = Array.from({length: ROWS}, () => Array(COLS).fill(-1));
     this.score = 0;
@@ -98,6 +111,7 @@ export class BlokesComponent {
       this.tick();
       this.cdr.detectChanges();
     }, this.speed);
+    this.saveState();
   }
 
   randomPiece(): Piece {
@@ -154,6 +168,7 @@ export class BlokesComponent {
         this.tick();
         this.cdr.detectChanges();
       }, this.speed);
+      this.saveState();
     }
   }
 
@@ -171,6 +186,7 @@ export class BlokesComponent {
       this.score += [0, 100, 300, 500, 800][lines];
       this.linesCleared += lines;
       this.updateLevel();
+      this.saveState();
     }
   }
 
@@ -247,5 +263,16 @@ export class BlokesComponent {
     } else {
       document.body.classList.remove('dark-mode');
     }
+    this.saveState();
+  }
+
+  saveState() {
+    localStorage.setItem('blokes-state', JSON.stringify({
+      score: this.score,
+      linesCleared: this.linesCleared,
+      level: this.level,
+      speed: this.speed,
+      darkMode: this.darkMode
+    }));
   }
 }

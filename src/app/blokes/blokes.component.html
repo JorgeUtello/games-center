@@ -1,5 +1,5 @@
 <div class="blokes-container">
-	<div class="blokes-header2">
+	<div class="blokes-header">
 		<div class="title">Blokes</div>
 	</div>
 	<div class="main-area">
@@ -66,7 +66,7 @@
 <div *ngIf="showConfig" class="config-popup">
 	<h3>Configuración</h3>
 	<label>
-		<input type="checkbox" [checked]="darkMode" (change)="toggleDarkMode()"> Modo oscuro
+		<input type="checkbox" class="check-btn" [checked]="darkMode" (change)="toggleDarkMode()"> Modo oscuro
 	</label>
 	<button (click)="toggleConfig()">Cerrar</button>
 </div>
