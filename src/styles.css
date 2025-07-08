@@ -103,3 +103,9 @@ input.check-btn {
 
 }
 
+.games-menu-container {
+    padding: 40px;
+	button{
+		width: 100%;
+	}
+}
